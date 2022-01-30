@@ -11,9 +11,8 @@ fn main() {
     let learned_set: HashSet<String> = util::read_file_2_set("./resources/learned");
 
     // get unlearned words from unlearned set which are not in learned set
-    let difference: HashSet<&String>= unlearned_set.difference(&learned_set).collect();
+    let difference: HashSet<&String> = unlearned_set.difference(&learned_set).collect();
 
     // write unlearned words to unlearned file
     util::write_set_2_file("./resources/output", difference);
 }
-
