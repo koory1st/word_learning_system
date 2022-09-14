@@ -1,7 +1,7 @@
 use regex::Regex;
-use std::{collections::HashSet, fmt::Error, fs};
 use std::fs::{File, OpenOptions};
 use std::io::{BufRead, BufReader, Write};
+use std::{collections::HashSet, fmt::Error, fs};
 
 lazy_static! {
     static ref CHINESE_REGEX: Regex = Regex::new(r"[\u4e00-\u9fa5]").unwrap();
@@ -21,7 +21,7 @@ fn is_chinese_letter(input: &char) -> bool {
 }
 
 fn is_english_letter(input: &char) -> bool {
-    input.is_ascii_alphabetic()
+    input.is_ascii_alphabetic() || input.to_owned() == '\''
 }
 
 fn is_split_char(input: &char) -> bool {
@@ -150,10 +150,13 @@ pub fn write_set_2_file(file_path: &str, difference: HashSet<&String>) {
         .write(true)
         .create(true)
         .append(true)
-        .open(file_path).unwrap();
+        .open(file_path)
+        .unwrap();
 
     for c in difference {
         print!("{} ", c);
-        output_file.write_all(format!("{}{}", c, "\n").as_bytes()).unwrap();
+        output_file
+            .write_all(format!("{}{}", c, "\n").as_bytes())
+            .unwrap();
     }
 }
